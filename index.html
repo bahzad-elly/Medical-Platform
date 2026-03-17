@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediConnect | مێدی‌کانێکت</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Arabic:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── CSS Variables ─────────────────────────────── */
+    :root {
+      --bg:        #f5f3ef;
+      --bg2:       #eceae4;
+      --surface:   #ffffff;
+      --border:    #d9d5cc;
+      --text:      #1a1917;
+      --text2:     #5a5751;
+      --accent:    #1a6b5c;
+      --accent2:   #d4a84b;
+      --accent-lt: #e8f4f1;
+      --danger:    #c0392b;
+      --card-sh:   0 4px 24px rgba(26,26,23,.08);
+      --radius:    14px;
+      --nav-h:     72px;
+    }
+    [data-theme="dark"] {
+      --bg:        #0f1210;
+      --bg2:       #161a18;
+      --surface:   #1e2420;
+      --border:    #2c3330;
+      --text:      #e8e4dc;
+      --text2:     #8a9490;
+      --accent:    #2dd4aa;
+      --accent2:   #e8b96a;
+      --accent-lt: #1a2e28;
+      --card-sh:   0 4px 24px rgba(0,0,0,.35);
+    }
+
+    /* ─── Reset & Base ──────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background .3s, color .3s;
+      overflow-x: hidden;
+    }
+    [lang="ku"] body, body.ku { font-family: 'Noto Sans Arabic', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ─── Typography ────────────────────────────────── */
+    .display { font-family: 'Playfair Display', serif; }
+    h1,h2,h3 { line-height: 1.2; }
+    .ku-font { font-family: 'Noto Sans Arabic', sans-serif; }
+
+    /* ─── Utility ───────────────────────────────────── */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .flex { display: flex; align-items: center; }
+    .gap-8 { gap: 8px; }
+    .gap-16 { gap: 16px; }
+
+    /* ─── Navbar ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(245,243,239,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s, border-color .3s;
+    }
+    [data-theme="dark"] nav { background: rgba(15,18,16,.85); }
+    nav .container { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo .logo-mark {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff; font-weight: 700;
+    }
+    .nav-logo .logo-text { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; }
+    .nav-logo .logo-sub { font-size: .65rem; color: var(--text2); letter-spacing: .05em; text-transform: uppercase; }
+
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 8px;
+      font-size: .88rem; font-weight: 500; color: var(--text2);
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--bg2); }
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .btn-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg2); color: var(--text2);
+      font-size: 16px; transition: background .2s, color .2s;
+    }
+    .btn-icon:hover { background: var(--border); color: var(--text); }
+
+    .lang-btn {
+      padding: 6px 12px; border-radius: 8px;
+      font-size: .82rem; font-weight: 600;
+      background: var(--bg2); color: var(--text2);
+      border: 1px solid var(--border);
+      transition: all .2s;
+    }
+    .lang-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .btn-primary {
+      padding: 9px 20px; border-radius: 9px;
+      background: var(--accent); color: #fff;
+      font-size: .88rem; font-weight: 600;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 6px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
+
+    /* ─── Mobile Menu ───────────────────────────────── */
+    .mobile-menu {
+      display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 16px 24px; z-index: 99;
+      flex-direction: column; gap: 6px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { padding: 12px 14px; border-radius: 9px; font-weight: 500; color: var(--text2); }
+    .mobile-menu a:hover { background: var(--bg2); color: var(--text); }
+    .mobile-menu .mobile-actions { display: flex; gap: 10px; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .mobile-menu .mobile-actions .btn-primary { flex: 1; text-align: center; }
+
+    /* ─── Hero ───────────────────────────────────────── */
+    .hero {
+      padding-top: calc(var(--nav-h) + 80px);
+      padding-bottom: 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 0%, rgba(26,107,92,.12) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 40% at 10% 80%, rgba(212,168,75,.10) 0%, transparent 50%);
+    }
+    [data-theme="dark"] .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 60% 0%, rgba(45,212,170,.1) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 40% at 10% 80%, rgba(232,185,106,.08) 0%, transparent 50%);
+    }
+    .hero .container { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 100px;
+      background: var(--accent-lt); color: var(--accent);
+      font-size: .78rem; font-weight: 600; letter-spacing: .04em;
+      text-transform: uppercase; margin-bottom: 20px;
+      border: 1px solid rgba(26,107,92,.2);
+    }
+    [data-theme="dark"] .hero-badge { border-color: rgba(45,212,170,.2); }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.1; margin-bottom: 20px; color: var(--text);
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 1.05rem; color: var(--text2); line-height: 1.7; max-width: 480px; margin-bottom: 36px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-outline {
+      padding: 11px 22px; border-radius: 10px;
+      border: 1.5px solid var(--border); color: var(--text);
+      font-size: .9rem; font-weight: 500;
+      transition: all .2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-lg { padding: 13px 28px; font-size: .95rem; border-radius: 11px; }
+
+    .hero-stats { display: flex; gap: 32px; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .stat-item { }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--text); }
+    .stat-label { font-size: .8rem; color: var(--text2); margin-top: 2px; }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative; border-radius: 24px; overflow: hidden;
+      background: linear-gradient(135deg, var(--accent-lt), var(--bg2));
+      height: 480px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-card {
+      background: var(--surface); border-radius: 18px;
+      padding: 24px; box-shadow: var(--card-sh);
+      width: 300px; position: relative;
+    }
+    .hero-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .doc-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .doc-name { font-weight: 600; font-size: .95rem; }
+    .doc-spec { font-size: .78rem; color: var(--accent); margin-top: 2px; }
+    .doc-rating { display: flex; gap: 3px; font-size: .75rem; color: var(--accent2); margin-top: 4px; }
+    .availability-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #e8f5ee; color: #1a6b3c; font-size: .72rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 100px;
+    }
+    [data-theme="dark"] .availability-tag { background: #1a2e1e; color: #4cba7a; }
+    .availability-tag .dot2 { width: 5px; height: 5px; border-radius: 50%; background: #2ecc71; }
+    .slots-row { display: flex; gap: 7px; margin-top: 14px; flex-wrap: wrap; }
+    .slot-chip {
+      padding: 5px 12px; border-radius: 7px;
+      background: var(--bg2); font-size: .75rem; font-weight: 500; color: var(--text2);
+      border: 1px solid var(--border); transition: all .2s;
+    }
+    .slot-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .book-btn-mini {
+      width: 100%; margin-top: 14px; padding: 10px;
+      border-radius: 10px; background: var(--accent); color: #fff;
+      font-weight: 600; font-size: .85rem; text-align: center;
+    }
+
+    .floating-pill {
+      position: absolute; background: var(--surface); border-radius: 12px;
+      padding: 10px 16px; box-shadow: var(--card-sh);
+      font-size: .8rem; font-weight: 500; display: flex; align-items: center; gap: 8px;
+    }
+    .pill-1 { top: 40px; right: -20px; animation: float1 3s ease-in-out infinite; }
+    .pill-2 { bottom: 60px; left: -30px; animation: float2 4s ease-in-out infinite; }
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+    .pill-icon { font-size: 18px; }
+
+    /* ─── Search Bar ─────────────────────────────────── */
+    .search-section { padding: 60px 0 0; }
+    .search-box {
+      background: var(--surface); border-radius: 18px;
+      padding: 28px 32px; box-shadow: var(--card-sh);
+      border: 1px solid var(--border);
+    }
+    .search-box h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 18px; }
+    .search-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; }
+    .search-field {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg); border-radius: 11px;
+      padding: 12px 16px; border: 1.5px solid var(--border);
+      transition: border-color .2s;
+    }
+    .search-field:focus-within { border-color: var(--accent); }
+    .search-field .sf-icon { font-size: 18px; opacity: .5; }
+    .search-field input, .search-field select {
+      background: none; border: none; outline: none;
+      font-family: inherit; font-size: .88rem; color: var(--text);
+      width: 100%;
+    }
+    .search-field select option { background: var(--surface); }
+    .search-btn {
+      padding: 0 28px; border-radius: 11px;
+      background: var(--accent); color: #fff;
+      font-weight: 600; font-size: .9rem;
+      transition: opacity .2s, transform .15s;
+      white-space: nowrap;
+    }
+    .search-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+    /* ─── How it Works ───────────────────────────────── */
+    .section { padding: 80px 0; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+    }
+    .section-label::before { content: ''; display: block; width: 24px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin-bottom: 14px;
+    }
+    .section-sub { color: var(--text2); font-size: 1rem; max-width: 560px; line-height: 1.7; }
+    .section-header { margin-bottom: 52px; }
+    .section-header.center { text-align: center; }
+    .section-header.center .section-label { justify-content: center; }
+    .section-header.center .section-label::before { display: none; }
+    .section-header.center .section-sub { margin: 0 auto; }
+
+    /* Steps */
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+    .steps-grid::before {
+      content: ''; position: absolute; top: 36px; left: calc(12.5% + 18px); right: calc(12.5% + 18px);
+      height: 2px; background: linear-gradient(to right, var(--accent), var(--accent2));
+      opacity: .3; z-index: 0;
+    }
+    .step-card {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 28px 22px; text-align: center;
+      border: 1px solid var(--border); position: relative;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .step-card:hover { transform: translateY(-6px); box-shadow: var(--card-sh); }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px; position: relative; z-index: 1;
+    }
+    .step-icon { font-size: 2rem; margin-bottom: 14px; }
+    .step-card h4 { font-weight: 600; font-size: .95rem; margin-bottom: 8px; }
+    .step-card p { font-size: .82rem; color: var(--text2); line-height: 1.6; }
+
+    /* ─── Featured Doctors ───────────────────────────── */
+    .doctors-section { background: var(--bg2); border-radius: 28px; padding: 60px 0; margin: 0 24px; }
+    .docs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 32px; }
+    .doc-card {
+      background: var(--surface); border-radius: 16px;
+      overflow: hidden; border: 1px solid var(--border);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .doc-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,.12); }
+    .doc-card-img {
+      height: 180px; background: linear-gradient(135deg, var(--accent-lt), var(--bg2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; position: relative;
+    }
+    .doc-badge-spec {
+      position: absolute; bottom: 10px; left: 10px;
+      background: var(--accent); color: #fff;
+      font-size: .68rem; font-weight: 700; padding: 3px 10px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .doc-card-body { padding: 18px; }
+    .doc-card-body h4 { font-weight: 600; margin-bottom: 4px; }
+    .doc-card-body .exp { font-size: .78rem; color: var(--text2); margin-bottom: 10px; }
+    .doc-stars { color: var(--accent2); font-size: .82rem; }
+    .doc-reviews { color: var(--text2); font-size: .75rem; margin-left: 4px; }
+    .doc-card-footer {
+      padding: 12px 18px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .avail-label { font-size: .75rem; color: #2ecc71; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+    .avail-label .dot3 { width: 5px; height: 5px; border-radius: 50%; background: #2ecc71; }
+    .doc-book-btn {
+      padding: 6px 14px; border-radius: 7px;
+      background: var(--accent-lt); color: var(--accent);
+      font-size: .78rem; font-weight: 700;
+      transition: all .2s;
+    }
+    .doc-book-btn:hover { background: var(--accent); color: #fff; }
+    .docs-section-header { padding: 0 32px; margin-bottom: 32px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .view-all-link { font-size: .88rem; font-weight: 600; color: var(--accent); border-bottom: 1.5px solid var(--accent); padding-bottom: 2px; }
+
+    /* ─── Specialties ────────────────────────────────── */
+    .specs-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .spec-card {
+      background: var(--surface); border-radius: 14px;
+      padding: 22px 16px; text-align: center;
+      border: 1px solid var(--border);
+      transition: all .25s; cursor: pointer;
+    }
+    .spec-card:hover { background: var(--accent); border-color: var(--accent); }
+    .spec-card:hover .spec-icon { transform: scale(1.15); }
+    .spec-card:hover .spec-name { color: #fff; }
+    .spec-card:hover .spec-count { color: rgba(255,255,255,.8); }
+    .spec-icon { font-size: 2.2rem; margin-bottom: 10px; transition: transform .25s; }
+    .spec-name { font-weight: 600; font-size: .85rem; margin-bottom: 3px; }
+    .spec-count { font-size: .72rem; color: var(--text2); }
+
+    /* ─── Knowledge Hub ──────────────────────────────── */
+    .articles-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+    .article-card {
+      background: var(--surface); border-radius: 16px;
+      overflow: hidden; border: 1px solid var(--border);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .article-card:hover { transform: translateY(-5px); box-shadow: var(--card-sh); }
+    .article-img {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 56px; background: var(--bg2);
+    }
+    .article-body { padding: 22px; }
+    .article-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 100px;
+      background: var(--accent-lt); color: var(--accent); font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em; margin-bottom: 12px;
+    }
+    .article-body h4 { font-size: 1rem; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .article-body p { font-size: .82rem; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+    .article-meta { display: flex; align-items: center; gap: 10px; font-size: .75rem; color: var(--text2); }
+    .meta-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .article-read-more { color: var(--accent); font-weight: 600; font-size: .8rem; margin-left: auto; }
+
+    /* ─── Testimonials ───────────────────────────────── */
+    .testimonials { background: var(--bg2); border-radius: 28px; padding: 60px 0; margin: 0 24px; }
+    .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 32px; }
+    .test-card {
+      background: var(--surface); border-radius: 16px;
+      padding: 28px; border: 1px solid var(--border);
+    }
+    .test-stars { color: var(--accent2); font-size: 14px; margin-bottom: 14px; }
+    .test-text { font-size: .88rem; line-height: 1.7; color: var(--text2); margin-bottom: 18px; font-style: italic; }
+    .test-author { display: flex; align-items: center; gap: 12px; }
+    .test-av { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .test-name { font-weight: 600; font-size: .88rem; }
+    .test-info { font-size: .75rem; color: var(--text2); }
+    .test-header { padding: 0 32px; margin-bottom: 32px; }
+
+    /* ─── CTA Banner ─────────────────────────────────── */
+    .cta-banner {
+      margin: 0 24px;
+      background: linear-gradient(135deg, var(--accent) 0%, #0f4a40 100%);
+      border-radius: 28px; padding: 64px 60px;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute;
+      top: -80px; right: -80px; width: 320px; height: 320px;
+      border-radius: 50%; background: rgba(255,255,255,.06);
+    }
+    .cta-banner::after {
+      content: ''; position: absolute;
+      bottom: -60px; left: 30%; width: 200px; height: 200px;
+      border-radius: 50%; background: rgba(255,255,255,.04);
+    }
+    .cta-inner { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+    .cta-content h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-bottom: 12px; }
+    .cta-content p { color: rgba(255,255,255,.8); font-size: 1rem; max-width: 480px; line-height: 1.6; }
+    .cta-actions { display: flex; gap: 14px; flex-shrink: 0; }
+    .btn-white { padding: 13px 26px; border-radius: 11px; background: #fff; color: var(--accent); font-weight: 700; font-size: .9rem; transition: opacity .2s, transform .15s; }
+    .btn-white:hover { opacity: .92; transform: translateY(-1px); }
+    .btn-ghost { padding: 13px 26px; border-radius: 11px; border: 1.5px solid rgba(255,255,255,.4); color: #fff; font-weight: 600; font-size: .9rem; transition: background .2s; }
+    .btn-ghost:hover { background: rgba(255,255,255,.1); }
+
+    /* ─── Footer ─────────────────────────────────────── */
+    footer { padding: 64px 0 32px; border-top: 1px solid var(--border); margin-top: 80px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer-brand p { font-size: .85rem; color: var(--text2); line-height: 1.7; margin: 14px 0 20px; max-width: 280px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .social-btn { width: 36px; height: 36px; border-radius: 9px; background: var(--bg2); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background .2s; }
+    .social-btn:hover { background: var(--accent); }
+    .footer-col h5 { font-weight: 700; font-size: .85rem; margin-bottom: 16px; text-transform: uppercase; letter-spacing: .05em; color: var(--text2); }
+    .footer-col a { display: block; font-size: .85rem; color: var(--text2); padding: 5px 0; transition: color .2s; }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: .78rem; color: var(--text2); }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { font-size: .78rem; color: var(--text2); transition: color .2s; }
+    .footer-bottom-links a:hover { color: var(--accent); }
+
+    /* ─── RTL/Kurdish adjustments ────────────────────── */
+    html[dir="rtl"] .section-label::before { display: none; }
+    html[dir="rtl"] .section-label::after { content: ''; display: block; width: 24px; height: 2px; background: var(--accent); border-radius: 2px; }
+    html[dir="rtl"] .steps-grid::before { left: calc(12.5% + 18px); right: calc(12.5% + 18px); }
+
+    /* ─── Animations ────────────────────────────────── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up-delay-1 { transition-delay: .1s; }
+    .fade-up-delay-2 { transition-delay: .2s; }
+    .fade-up-delay-3 { transition-delay: .3s; }
+
+    /* ─── Responsive ────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .docs-grid { grid-template-columns: repeat(2, 1fr); }
+      .specs-grid { grid-template-columns: repeat(4, 1fr); }
+      .articles-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid::before { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hero .container { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .search-row { grid-template-columns: 1fr 1fr; }
+      .search-row .search-btn { grid-column: span 2; }
+      .docs-grid { grid-template-columns: 1fr 1fr; padding: 0 20px; }
+      .docs-section-header { padding: 0 20px; }
+      .specs-grid { grid-template-columns: repeat(3, 1fr); }
+      .test-grid { grid-template-columns: 1fr; }
+      .cta-banner { padding: 40px 28px; }
+      .cta-inner { flex-direction: column; }
+      .cta-actions { width: 100%; }
+      .btn-white, .btn-ghost { flex: 1; text-align: center; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .hero-stats { flex-direction: column; gap: 16px; }
+      .docs-grid { grid-template-columns: 1fr; }
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .articles-grid { grid-template-columns: 1fr; }
+      .search-row { grid-template-columns: 1fr; }
+      .search-row .search-btn { grid-column: span 1; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .test-grid { padding: 0 20px; }
+    }
+
+    /* Scroll to top */
+    .scroll-top {
+      position: fixed; bottom: 28px; right: 28px; z-index: 50;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; box-shadow: 0 4px 20px rgba(0,0,0,.2);
+      opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s;
+      transform: translateY(10px);
+    }
+    .scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ─── Navbar ──────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-logo">
+      <div class="logo-mark">M</div>
+      <div>
+        <div class="logo-text" id="logo-text">MediConnect</div>
+        <div class="logo-sub" id="logo-sub">Medical Platform</div>
+      </div>
+    </div>
+
+    <div class="nav-links" id="nav-links">
+      <a href="#" class="active" id="nav-home">Home</a>
+      <a href="#search-section" id="nav-find">Find Doctors</a>
+      <a href="#specialties" id="nav-spec">Specialties</a>
+      <a href="#knowledge" id="nav-hub">Knowledge Hub</a>
+      <a href="#about" id="nav-about">About</a>
+    </div>
+
+    <div class="nav-right">
+      <button class="lang-btn" onclick="toggleLang()" id="lang-toggle">کوردی</button>
+      <button class="btn-icon" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">☀️</button>
+      <a href="#" class="btn-primary" id="nav-book">Book Appointment</a>
+      <button class="hamburger" onclick="toggleMenu()" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Mobile Menu ─────────────────────────────────────── -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#" id="mnav-home">Home</a>
+  <a href="#search-section" id="mnav-find">Find Doctors</a>
+  <a href="#specialties" id="mnav-spec">Specialties</a>
+  <a href="#knowledge" id="mnav-hub">Knowledge Hub</a>
+  <div class="mobile-actions">
+    <button class="lang-btn" onclick="toggleLang()" id="mlang-toggle">کوردی</button>
+    <a href="#" class="btn-primary" id="mnav-book">Book Now</a>
+  </div>
+</div>
+
+<!-- ─── Hero ─────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span id="badge-text">Trusted Medical Platform</span>
+      </div>
+      <h1 class="display fade-up" id="hero-h1">
+        Your Health,<br>
+        <span>Our Priority</span>
+      </h1>
+      <p class="fade-up fade-up-delay-1" id="hero-p">
+        Connect with certified doctors, book appointments instantly, and access verified medical articles. All in one place, all for you.
+      </p>
+      <div class="hero-cta fade-up fade-up-delay-2">
+        <a href="#search-section" class="btn-primary btn-lg" id="hero-cta1">Find a Doctor</a>
+        <a href="#knowledge" class="btn-outline btn-lg" id="hero-cta2">Read Articles</a>
+      </div>
+      <div class="hero-stats fade-up fade-up-delay-3">
+        <div class="stat-item">
+          <div class="stat-num">500+</div>
+          <div class="stat-label" id="stat1">Certified Doctors</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">20K+</div>
+          <div class="stat-label" id="stat2">Appointments Booked</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">98%</div>
+          <div class="stat-label" id="stat3">Patient Satisfaction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="doc-avatar">👨‍⚕️</div>
+          <div>
+            <div class="doc-name">Dr. Ahmad Karimi</div>
+            <div class="doc-spec">Cardiologist</div>
+            <div class="doc-rating">★★★★★ <span style="color:var(--text2)"> 4.9</span></div>
+          </div>
+        </div>
+        <span class="availability-tag"><span class="dot2"></span> Available Today</span>
+        <div class="slots-row">
+          <div class="slot-chip">9:00 AM</div>
+          <div class="slot-chip selected">11:00 AM</div>
+          <div class="slot-chip">2:00 PM</div>
+          <div class="slot-chip">4:30 PM</div>
+        </div>
+        <div class="book-btn-mini">Book Appointment →</div>
+      </div>
+      <div class="floating-pill pill-1">
+        <span class="pill-icon">✅</span> Verified Doctor
+      </div>
+      <div class="floating-pill pill-2">
+        <span class="pill-icon">📋</span> 150+ Reviews
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Search ──────────────────────────────────────────── -->
+<section class="search-section container" id="search-section">
+  <div class="search-box fade-up">
+    <h3 id="search-title">🔍 Find the Right Doctor</h3>
+    <div class="search-row">
+      <div class="search-field">
+        <span class="sf-icon">👤</span>
+        <input type="text" id="search-name" placeholder="Doctor name..." />
+      </div>
+      <div class="search-field">
+        <span class="sf-icon">🏥</span>
+        <select id="search-spec">
+          <option value="" id="spec-opt0">All Specialties</option>
+          <option>Cardiology</option>
+          <option>Neurology</option>
+          <option>Pediatrics</option>
+          <option>Dermatology</option>
+          <option>Orthopedics</option>
+          <option>Ophthalmology</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <span class="sf-icon">📍</span>
+        <input type="text" id="search-loc" placeholder="City or area..." />
+      </div>
+      <button class="search-btn" id="search-btn">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How it Works ────────────────────────────────────── -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-header center">
+      <div class="section-label" id="steps-label">How It Works</div>
+      <h2 class="section-title display" id="steps-title">Book in 4 Simple Steps</h2>
+      <p class="section-sub" id="steps-sub">Getting healthcare has never been easier. From search to confirmed appointment in minutes.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card fade-up">
+        <div class="step-num">1</div>
+        <div class="step-icon">🔍</div>
+        <h4 id="step1-t">Search a Doctor</h4>
+        <p id="step1-p">Browse by specialty, location, or name. Use advanced filters to find exactly who you need.</p>
+      </div>
+      <div class="step-card fade-up fade-up-delay-1">
+        <div class="step-num">2</div>
+        <div class="step-icon">👤</div>
+        <h4 id="step2-t">View Profile</h4>
+        <p id="step2-p">Read the doctor's qualifications, experience, clinic photos and patient reviews.</p>
+      </div>
+      <div class="step-card fade-up fade-up-delay-2">
+        <div class="step-num">3</div>
+        <div class="step-icon">📅</div>
+        <h4 id="step3-t">Pick a Slot</h4>
+        <p id="step3-p">See real-time availability and choose a time that fits your schedule.</p>
+      </div>
+      <div class="step-card fade-up fade-up-delay-3">
+        <div class="step-num">4</div>
+        <div class="step-icon">✅</div>
+        <h4 id="step4-t">Confirmed!</h4>
+        <p id="step4-p">Receive instant confirmation and a reminder before your appointment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Featured Doctors ─────────────────────────────────── -->
+<section class="section" style="padding-top:0" id="doctors">
+  <div class="doctors-section">
+    <div class="docs-section-header fade-up">
+      <div>
+        <div class="section-label" id="docs-label">Our Team</div>
+        <h2 class="section-title display" id="docs-title">Featured Doctors</h2>
+      </div>
+      <a href="#" class="view-all-link" id="docs-all">View All Doctors →</a>
+    </div>
+    <div class="docs-grid">
+      <div class="doc-card fade-up">
+        <div class="doc-card-img">👨‍⚕️<span class="doc-badge-spec">Cardiology</span></div>
+        <div class="doc-card-body">
+          <h4>Dr. Ahmad Al-Rasheed</h4>
+          <div class="exp">15 years experience</div>
+          <div><span class="doc-stars">★★★★★</span><span class="doc-reviews">(128 reviews)</span></div>
+        </div>
+        <div class="doc-card-footer">
+          <span class="avail-label"><span class="dot3"></span> Available</span>
+          <button class="doc-book-btn" id="book-lbl">Book Now</button>
+        </div>
+      </div>
+      <div class="doc-card fade-up fade-up-delay-1">
+        <div class="doc-card-img">👩‍⚕️<span class="doc-badge-spec">Neurology</span></div>
+        <div class="doc-card-body">
+          <h4>Dr. Sara Mohammed</h4>
+          <div class="exp">10 years experience</div>
+          <div><span class="doc-stars">★★★★★</span><span class="doc-reviews">(97 reviews)</span></div>
+        </div>
+        <div class="doc-card-footer">
+          <span class="avail-label"><span class="dot3"></span> Available</span>
+          <button class="doc-book-btn">Book Now</button>
+        </div>
+      </div>
+      <div class="doc-card fade-up fade-up-delay-2">
+        <div class="doc-card-img">🧑‍⚕️<span class="doc-badge-spec">Pediatrics</span></div>
+        <div class="doc-card-body">
+          <h4>Dr. Omar Hassan</h4>
+          <div class="exp">8 years experience</div>
+          <div><span class="doc-stars">★★★★☆</span><span class="doc-reviews">(64 reviews)</span></div>
+        </div>
+        <div class="doc-card-footer">
+          <span class="avail-label"><span class="dot3"></span> Available</span>
+          <button class="doc-book-btn">Book Now</button>
+        </div>
+      </div>
+      <div class="doc-card fade-up fade-up-delay-3">
+        <div class="doc-card-img">👩‍⚕️<span class="doc-badge-spec">Dermatology</span></div>
+        <div class="doc-card-body">
+          <h4>Dr. Lana Aziz</h4>
+          <div class="exp">12 years experience</div>
+          <div><span class="doc-stars">★★★★★</span><span class="doc-reviews">(110 reviews)</span></div>
+        </div>
+        <div class="doc-card-footer">
+          <span class="avail-label"><span class="dot3"></span> Available</span>
+          <button class="doc-book-btn">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Specialties ──────────────────────────────────────── -->
+<section class="section" id="specialties">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="section-label" id="spec-label">Browse</div>
+      <h2 class="section-title display" id="spec-title">Medical Specialties</h2>
+      <p class="section-sub" id="spec-sub">Find specialists across all major fields of medicine.</p>
+    </div>
+    <div class="specs-grid">
+      <div class="spec-card fade-up"><div class="spec-icon">❤️</div><div class="spec-name" id="s1">Cardiology</div><div class="spec-count">42 doctors</div></div>
+      <div class="spec-card fade-up fade-up-delay-1"><div class="spec-icon">🧠</div><div class="spec-name" id="s2">Neurology</div><div class="spec-count">28 doctors</div></div>
+      <div class="spec-card fade-up fade-up-delay-2"><div class="spec-icon">🦷</div><div class="spec-name" id="s3">Dentistry</div><div class="spec-count">60 doctors</div></div>
+      <div class="spec-card fade-up fade-up-delay-1"><div class="spec-icon">👁️</div><div class="spec-name" id="s4">Ophthalmology</div><div class="spec-count">24 doctors</div></div>
+      <div class="spec-card fade-up fade-up-delay-2"><div class="spec-icon">🦴</div><div class="spec-name" id="s5">Orthopedics</div><div class="spec-count">33 doctors</div></div>
+      <div class="spec-card fade-up fade-up-delay-3"><div class="spec-icon">👶</div><div class="spec-name" id="s6">Pediatrics</div><div class="spec-count">38 doctors</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Knowledge Hub ────────────────────────────────────── -->
+<section class="section" id="knowledge">
+  <div class="container">
+    <div class="section-header fade-up" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="section-label" id="hub-label">Knowledge Hub</div>
+        <h2 class="section-title display" id="hub-title">Latest Medical Articles</h2>
+        <p class="section-sub" id="hub-sub">Reliable content written by certified doctors on our platform.</p>
+      </div>
+      <a href="#" class="view-all-link" id="hub-all">View All Articles →</a>
+    </div>
+    <div class="articles-grid">
+      <div class="article-card fade-up">
+        <div class="article-img">❤️</div>
+        <div class="article-body">
+          <span class="article-tag" id="art1-tag">Cardiology</span>
+          <h4 id="art1-title">Understanding Heart Health: Prevention Tips for 2025</h4>
+          <p id="art1-p">Discover practical steps to protect your heart health through diet, exercise and regular checkups.</p>
+          <div class="article-meta">
+            <div class="meta-avatar">👨‍⚕️</div>
+            <span id="art1-doc">Dr. Ahmad Al-Rasheed</span>
+            <span>· 5 min read</span>
+            <a href="#" class="article-read-more" id="art1-read">Read →</a>
+          </div>
+        </div>
+      </div>
+      <div class="article-card fade-up fade-up-delay-1">
+        <div class="article-img">🧠</div>
+        <div class="article-body">
+          <span class="article-tag">Neurology</span>
+          <h4 id="art2-title">Managing Migraines: What You Need to Know</h4>
+          <p id="art2-p">A neurologist's guide to understanding migraine triggers, treatments and lifestyle changes.</p>
+          <div class="article-meta">
+            <div class="meta-avatar">👩‍⚕️</div>
+            <span>Dr. Sara Mohammed</span>
+            <span>· 7 min read</span>
+            <a href="#" class="article-read-more" id="art2-read">Read →</a>
+          </div>
+        </div>
+      </div>
+      <div class="article-card fade-up fade-up-delay-2">
+        <div class="article-img">👶</div>
+        <div class="article-body">
+          <span class="article-tag">Pediatrics</span>
+          <h4 id="art3-title">Children's Nutrition: Building Strong Foundations</h4>
+          <p id="art3-p">Essential nutritional guidelines for children aged 2–12 to support healthy growth and immunity.</p>
+          <div class="article-meta">
+            <div class="meta-avatar">🧑‍⚕️</div>
+            <span>Dr. Omar Hassan</span>
+            <span>· 6 min read</span>
+            <a href="#" class="article-read-more" id="art3-read">Read →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Testimonials ─────────────────────────────────────── -->
+<section class="section" style="padding-top:0" id="reviews">
+  <div class="testimonials">
+    <div class="test-header fade-up">
+      <div class="section-label" id="test-label">Reviews</div>
+      <h2 class="section-title display" id="test-title">What Patients Say</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card fade-up">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text" id="t1">"The booking process was incredibly smooth. I found a specialist and had an appointment the next day. No more waiting for weeks!"</p>
+        <div class="test-author">
+          <div class="test-av">😊</div>
+          <div>
+            <div class="test-name">Nadia K.</div>
+            <div class="test-info">Sulaymaniyah</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card fade-up fade-up-delay-1">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text" id="t2">"Reading verified articles helped me understand my condition before the appointment. The platform saved me from falling for misinformation online."</p>
+        <div class="test-author">
+          <div class="test-av">🙂</div>
+          <div>
+            <div class="test-name">Kamal A.</div>
+            <div class="test-info">Erbil</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card fade-up fade-up-delay-2">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text" id="t3">"As a doctor, this platform helped me reach more patients and share my knowledge. The profile management tools are very intuitive."</p>
+        <div class="test-author">
+          <div class="test-av">👨‍⚕️</div>
+          <div>
+            <div class="test-name">Dr. Soran M.</div>
+            <div class="test-info">Specialist, Duhok</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA Banner ───────────────────────────────────────── -->
+<section class="section" style="padding-top:0" id="about">
+  <div class="cta-banner fade-up">
+    <div class="cta-inner">
+      <div class="cta-content">
+        <h2 id="cta-h2">Ready to Take Control of Your Health?</h2>
+        <p id="cta-p">Join thousands of patients who have already discovered a smarter way to access healthcare. Book your first appointment today — it only takes a minute.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="#" class="btn-white" id="cta-btn1">Get Started Free</a>
+        <a href="#" class="btn-ghost" id="cta-btn2">For Doctors →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ───────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-mark">M</div>
+          <div>
+            <div class="logo-text" style="font-size:1.1rem">MediConnect</div>
+          </div>
+        </div>
+        <p id="footer-desc">Connecting patients with certified doctors in Iraq. Trusted medical information, seamless booking, and quality care.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#">📘</a>
+          <a class="social-btn" href="#">🐦</a>
+          <a class="social-btn" href="#">📸</a>
+          <a class="social-btn" href="#">💼</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5 id="f-patients">For Patients</h5>
+        <a href="#" id="f-find">Find a Doctor</a>
+        <a href="#" id="f-book">Book Appointment</a>
+        <a href="#" id="f-reviews">Read Reviews</a>
+        <a href="#" id="f-articles">Medical Articles</a>
+      </div>
+      <div class="footer-col">
+        <h5 id="f-doctors">For Doctors</h5>
+        <a href="#" id="f-join">Join Platform</a>
+        <a href="#" id="f-manage">Manage Profile</a>
+        <a href="#" id="f-schedule">Set Schedule</a>
+        <a href="#" id="f-publish">Publish Articles</a>
+      </div>
+      <div class="footer-col">
+        <h5 id="f-company">Company</h5>
+        <a href="#" id="f-about">About Us</a>
+        <a href="#" id="f-privacy">Privacy Policy</a>
+        <a href="#" id="f-terms">Terms of Use</a>
+        <a href="#" id="f-contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="f-copy">© 2025 MediConnect. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#" id="f-security">Security</a>
+        <a href="#" id="f-sitemap">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Scroll to top ────────────────────────────────────── -->
+<button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  /* ─── Language Content ────────────────────────────────── */
+  const CONTENT = {
+    en: {
+      dir: 'ltr',
+      lang: 'en',
+      logoText: 'MediConnect',
+      logoSub: 'Medical Platform',
+      langToggle: 'کوردی',
+      navHome: 'Home',
+      navFind: 'Find Doctors',
+      navSpec: 'Specialties',
+      navHub: 'Knowledge Hub',
+      navAbout: 'About',
+      navBook: 'Book Appointment',
+      badgeText: 'Trusted Medical Platform',
+      heroH1: 'Your Health,<br><span>Our Priority</span>',
+      heroP: 'Connect with certified doctors, book appointments instantly, and access verified medical articles. All in one place, all for you.',
+      heroCta1: 'Find a Doctor',
+      heroCta2: 'Read Articles',
+      stat1: 'Certified Doctors',
+      stat2: 'Appointments Booked',
+      stat3: 'Patient Satisfaction',
+      searchTitle: '🔍 Find the Right Doctor',
+      searchName: 'Doctor name...',
+      searchLoc: 'City or area...',
+      searchBtn: 'Search',
+      specOpt: 'All Specialties',
+      stepsLabel: 'How It Works',
+      stepsTitle: 'Book in 4 Simple Steps',
+      stepsSub: 'Getting healthcare has never been easier. From search to confirmed appointment in minutes.',
+      step1T: 'Search a Doctor', step1P: 'Browse by specialty, location, or name. Use advanced filters to find exactly who you need.',
+      step2T: 'View Profile', step2P: "Read the doctor's qualifications, experience, clinic photos and patient reviews.",
+      step3T: 'Pick a Slot', step3P: "See real-time availability and choose a time that fits your schedule.",
+      step4T: 'Confirmed!', step4P: 'Receive instant confirmation and a reminder before your appointment.',
+      docsLabel: 'Our Team',
+      docsTitle: 'Featured Doctors',
+      docsAll: 'View All Doctors →',
+      bookLbl: 'Book Now',
+      specLabel: 'Browse',
+      specTitle: 'Medical Specialties',
+      specSub: 'Find specialists across all major fields of medicine.',
+      s1:'Cardiology', s2:'Neurology', s3:'Dentistry', s4:'Ophthalmology', s5:'Orthopedics', s6:'Pediatrics',
+      hubLabel: 'Knowledge Hub',
+      hubTitle: 'Latest Medical Articles',
+      hubSub: 'Reliable content written by certified doctors on our platform.',
+      hubAll: 'View All Articles →',
+      art1Tag: 'Cardiology',
+      art1Title: 'Understanding Heart Health: Prevention Tips for 2025',
+      art1P: 'Discover practical steps to protect your heart health through diet, exercise and regular checkups.',
+      art1Doc: 'Dr. Ahmad Al-Rasheed',
+      art1Read: 'Read →',
+      art2Title: 'Managing Migraines: What You Need to Know',
+      art2P: "A neurologist's guide to understanding migraine triggers, treatments and lifestyle changes.",
+      art2Read: 'Read →',
+      art3Title: "Children's Nutrition: Building Strong Foundations",
+      art3P: 'Essential nutritional guidelines for children aged 2–12 to support healthy growth and immunity.',
+      art3Read: 'Read →',
+      testLabel: 'Reviews',
+      testTitle: 'What Patients Say',
+      t1: '"The booking process was incredibly smooth. I found a specialist and had an appointment the next day. No more waiting for weeks!"',
+      t2: '"Reading verified articles helped me understand my condition before the appointment. The platform saved me from falling for misinformation online."',
+      t3: '"As a doctor, this platform helped me reach more patients and share my knowledge. The profile management tools are very intuitive."',
+      ctaH2: 'Ready to Take Control of Your Health?',
+      ctaP: 'Join thousands of patients who have already discovered a smarter way to access healthcare. Book your first appointment today — it only takes a minute.',
+      ctaBtn1: 'Get Started Free',
+      ctaBtn2: 'For Doctors →',
+      footerDesc: 'Connecting patients with certified doctors in Iraq. Trusted medical information, seamless booking, and quality care.',
+      fPatients:'For Patients', fDoctors:'For Doctors', fCompany:'Company',
+      fFind:'Find a Doctor', fBook:'Book Appointment', fReviews:'Read Reviews', fArticles:'Medical Articles',
+      fJoin:'Join Platform', fManage:'Manage Profile', fSchedule:'Set Schedule', fPublish:'Publish Articles',
+      fAbout:'About Us', fPrivacy:'Privacy Policy', fTerms:'Terms of Use', fContact:'Contact',
+      fCopy:'© 2025 MediConnect. All rights reserved.',
+      fSecurity:'Security', fSitemap:'Sitemap',
+    },
+    ku: {
+      dir: 'rtl',
+      lang: 'ku',
+      logoText: 'مێدی‌کانێکت',
+      logoSub: 'پلاتفۆرمی پزیشکی',
+      langToggle: 'English',
+      navHome: 'سەرەکی',
+      navFind: 'دۆکتۆر بدۆزەرەوە',
+      navSpec: 'پسپۆرییەکان',
+      navHub: 'کتێبخانەی پزیشکی',
+      navAbout: 'دەربارە',
+      navBook: 'نۆبە بگرە',
+      badgeText: 'پلاتفۆرمی پزیشکی متمانەپێکراو',
+      heroH1: 'تەندروستیت،<br><span>مەرجی ئێمەیە</span>',
+      heroP: 'پەیوەندی بکە بە دۆکتۆرە متمانەپێکراوەکان، نۆبە بگرە بە خێرایی، و دەستت بگات بە وتارە پزیشکی دروست‌کراوەکان. هەموو شتێک لە یەک شوێن.',
+      heroCta1: 'دۆکتۆر بدۆزەرەوە',
+      heroCta2: 'وتارەکان بخوێنەوە',
+      stat1: 'دۆکتۆری متمانەپێکراو',
+      stat2: 'نۆبە گیراوە',
+      stat3: 'رەزامەندیی نەخۆش',
+      searchTitle: '🔍 دۆکتۆری گونجاو بدۆزەرەوە',
+      searchName: 'ناوی دۆکتۆر...',
+      searchLoc: 'شار یان ناوچە...',
+      searchBtn: 'گەڕان',
+      specOpt: 'هەموو پسپۆرییەکان',
+      stepsLabel: 'چۆن کار دەکات',
+      stepsTitle: 'لە ٤ هەنگاوی ئاسان نۆبە بگرە',
+      stepsSub: 'دەستپێکردن بە خزمەتگوزارییە تەندروستییەکان هەرگیز ئەوەندە ئاسان نەبووە.',
+      step1T: 'دۆکتۆر بدۆزەرەوە', step1P: 'بەپێی پسپۆری، شوێن، یان ناو بگەڕێ.',
+      step2T: 'پرۆفایل ببینە', step2P: 'شایستەنامەکانی دۆکتۆر، ئەزموون و نرخاندنی نەخۆشەکان بخوێنەرەوە.',
+      step3T: 'کاتێک هەڵبژێرە', step3P: 'ئامادەبوون بینە و کاتێکی گونجاو هەڵبژێرە.',
+      step4T: 'پشتڕاستکرایەوە!', step4P: 'پشتڕاستکردنەوەی جاران و بیرکردنەوەیەک پێش نۆبەکەت وەردەگرێت.',
+      docsLabel: 'تیمی ئێمە',
+      docsTitle: 'دۆکتۆرە کارکراوەکان',
+      docsAll: 'هەموو دۆکتۆرەکان ببینە ←',
+      bookLbl: 'نۆبە بگرە',
+      specLabel: 'گەڕان',
+      specTitle: 'پسپۆرییە پزیشکییەکان',
+      specSub: 'پسپۆر بدۆزەرەوە لە هەموو بواری پزیشکیدا.',
+      s1:'دڵ و خوێن', s2:'مێشک و دەمار', s3:'دەندان', s4:'چاو', s5:'ئێسک', s6:'منداڵان',
+      hubLabel: 'کتێبخانەی پزیشکی',
+      hubTitle: 'دوایین وتارە پزیشکییەکان',
+      hubSub: 'ناوەڕۆکی متمانەپێکراو نووسراوی دۆکتۆرانی متمانەپێکراو لەسەر پلاتفۆرمەکەمان.',
+      hubAll: 'هەموو وتارەکان ببینە ←',
+      art1Tag: 'دڵ و خوێن',
+      art1Title: 'تەندروستیی دڵ تێبگە: ئامۆژگارییەکانی پاراستن',
+      art1P: 'هەنگاوی کارپێکراو بدۆزەرەوە بۆ پارێزگاری لە تەندروستیی دڵەکەت.',
+      art1Doc: 'د. ئەحمەد ئەڵرەشید',
+      art1Read: 'بخوێنەرەوە ←',
+      art2Title: 'بەڕێوەبردنی مایگرێن: ئەوەی دەتپێویت بزانیت',
+      art2P: 'ڕێنمایی دکتۆری مێشک و دەماردا بۆ تێگەیشتن لە هۆکارەکانی مایگرێن.',
+      art2Read: 'بخوێنەرەوە ←',
+      art3Title: 'خۆراکی منداڵان: بنچینەی بەهێز دروستکردن',
+      art3P: 'ڕێنمایییە گرنگەکانی خۆراک بۆ منداڵانی ٢ تا ١٢ ساڵ.',
+      art3Read: 'بخوێنەرەوە ←',
+      testLabel: 'نرخاندنەکان',
+      testTitle: 'نەخۆشەکان چی دەڵێن',
+      t1: '«پرۆسەی نۆبەگرتن زۆر ئاسان بوو. پسپۆرێکم دۆزییەوە و ئەمڕۆی تری نۆبەم هەبوو. دیگر مانەوەی حەفتەیی نییە!»',
+      t2: '«خوێندنەوەی وتارە دروستکراوەکان یارمەتیدام بیری تەواومان لەسەر نەخۆشیەکەم بکەم پێش نۆبەکە. پلاتفۆرمەکە ئازام ڕزگارکرد.»',
+      t3: '«وەک دکتۆر، ئەم پلاتفۆرمە یارمەتیمدا زیاتر نەخۆش بگرمەوە و زانستم هاوبەش بکەم. ئامرازەکانی بەڕێوەبردنی پرۆفایل زۆر باشن.»',
+      ctaH2: 'ئامادەیت کۆنترۆڵی تەندروستیت بگرێت?',
+      ctaP: 'بەشداری ئەوانەی بکە کە ڕێگایەکی زیرەکانەتری دەستپێکردن بە خزمەتگوزارییە تەندروستییەکان دۆزیوەتەوە.',
+      ctaBtn1: 'بەخۆڕایی دەست پێبکە',
+      ctaBtn2: '← بۆ دکتۆرەکان',
+      footerDesc: 'پەیوەندیکردنی نەخۆش بە دکتۆرانی متمانەپێکراو لە عێراقدا. زانیاری پزیشکی متمانەپێکراو، نۆبەگرتنی ئاسان، و چاودێرییی باش.',
+      fPatients:'بۆ نەخۆشەکان', fDoctors:'بۆ دکتۆرەکان', fCompany:'کۆمپانیا',
+      fFind:'دکتۆر بدۆزەرەوە', fBook:'نۆبە بگرە', fReviews:'نرخاندنەکان بخوێنەرەوە', fArticles:'وتارە پزیشکییەکان',
+      fJoin:'بەشداری پلاتفۆرم بکە', fManage:'پرۆفایل بەڕێوەببە', fSchedule:'کاتجەدوەل دابنێ', fPublish:'وتار بڵاوبکەرەوە',
+      fAbout:'دەربارەی ئێمە', fPrivacy:'سیاسەتی تایبەتمەندی', fTerms:'مەرجەکانی بەکارهێنان', fContact:'پەیوەندی',
+      fCopy:'© 2025 مێدی‌کانێکت. هەموو مافەکان پارێزراون.',
+      fSecurity:'ئەمنیەت', fSitemap:'نەخشەی مەلپەر',
+    }
+  };
+
+  let currentLang = 'en';
+  let currentTheme = 'light';
+
+  function applyContent(lang) {
+    const c = CONTENT[lang];
+    document.documentElement.setAttribute('dir', c.dir);
+    document.documentElement.setAttribute('lang', c.lang);
+
+    const set = (id, val, isHTML = false) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (isHTML) el.innerHTML = val;
+      else el.textContent = val;
+    };
+
+    set('logo-text', c.logoText);
+    set('logo-sub', c.logoSub);
+    set('lang-toggle', c.langToggle);
+    set('mlang-toggle', c.langToggle);
+    set('nav-home', c.navHome);
+    set('nav-find', c.navFind);
+    set('nav-spec', c.navSpec);
+    set('nav-hub', c.navHub);
+    set('nav-about', c.navAbout);
+    set('nav-book', c.navBook);
+    set('mnav-home', c.navHome);
+    set('mnav-find', c.navFind);
+    set('mnav-spec', c.navSpec);
+    set('mnav-hub', c.navHub);
+    set('mnav-book', c.navBook);
+    set('badge-text', c.badgeText);
+    set('hero-h1', c.heroH1, true);
+    set('hero-p', c.heroP);
+    set('hero-cta1', c.heroCta1);
+    set('hero-cta2', c.heroCta2);
+    set('stat1', c.stat1);
+    set('stat2', c.stat2);
+    set('stat3', c.stat3);
+    set('search-title', c.searchTitle, true);
+    set('search-name', ''); document.getElementById('search-name').placeholder = c.searchName;
+    set('search-loc', ''); document.getElementById('search-loc').placeholder = c.searchLoc;
+    set('search-btn', c.searchBtn);
+    set('spec-opt0', c.specOpt);
+    set('steps-label', c.stepsLabel);
+    set('steps-title', c.stepsTitle);
+    set('steps-sub', c.stepsSub);
+    set('step1-t', c.step1T); set('step1-p', c.step1P);
+    set('step2-t', c.step2T); set('step2-p', c.step2P);
+    set('step3-t', c.step3T); set('step3-p', c.step3P);
+    set('step4-t', c.step4T); set('step4-p', c.step4P);
+    set('docs-label', c.docsLabel);
+    set('docs-title', c.docsTitle);
+    set('docs-all', c.docsAll);
+    document.querySelectorAll('.doc-book-btn').forEach(b => b.textContent = c.bookLbl);
+    set('spec-label', c.specLabel);
+    set('spec-title', c.specTitle);
+    set('spec-sub', c.specSub);
+    set('s1', c.s1); set('s2', c.s2); set('s3', c.s3);
+    set('s4', c.s4); set('s5', c.s5); set('s6', c.s6);
+    set('hub-label', c.hubLabel);
+    set('hub-title', c.hubTitle);
+    set('hub-sub', c.hubSub);
+    set('hub-all', c.hubAll);
+    set('art1-tag', c.art1Tag);
+    set('art1-title', c.art1Title);
+    set('art1-p', c.art1P);
+    set('art1-doc', c.art1Doc);
+    set('art1-read', c.art1Read);
+    set('art2-title', c.art2Title);
+    set('art2-p', c.art2P);
+    set('art2-read', c.art2Read);
+    set('art3-title', c.art3Title);
+    set('art3-p', c.art3P);
+    set('art3-read', c.art3Read);
+    set('test-label', c.testLabel);
+    set('test-title', c.testTitle);
+    set('t1', c.t1); set('t2', c.t2); set('t3', c.t3);
+    set('cta-h2', c.ctaH2);
+    set('cta-p', c.ctaP);
+    set('cta-btn1', c.ctaBtn1);
+    set('cta-btn2', c.ctaBtn2);
+    set('footer-desc', c.footerDesc);
+    set('f-patients', c.fPatients); set('f-doctors', c.fDoctors); set('f-company', c.fCompany);
+    set('f-find', c.fFind); set('f-book', c.fBook); set('f-reviews', c.fReviews); set('f-articles', c.fArticles);
+    set('f-join', c.fJoin); set('f-manage', c.fManage); set('f-schedule', c.fSchedule); set('f-publish', c.fPublish);
+    set('f-about', c.fAbout); set('f-privacy', c.fPrivacy); set('f-terms', c.fTerms); set('f-contact', c.fContact);
+    set('f-copy', c.fCopy);
+    set('f-security', c.fSecurity); set('f-sitemap', c.fSitemap);
+
+    // Font toggle for Kurdish
+    document.body.classList.toggle('ku', lang === 'ku');
+  }
+
+  function toggleLang() {
+    currentLang = currentLang === 'en' ? 'ku' : 'en';
+    applyContent(currentLang);
+  }
+
+  function toggleTheme() {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    document.getElementById('theme-btn').textContent = currentTheme === 'light' ? '☀️' : '🌙';
+  }
+
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Scroll-to-top
+  window.addEventListener('scroll', () => {
+    const st = document.getElementById('scroll-top');
+    if (window.scrollY > 400) st.classList.add('visible');
+    else st.classList.remove('visible');
+  });
+
+  // Init
+  applyContent('en');
+</script>
+</body>
+</html>
